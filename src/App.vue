@@ -25,7 +25,7 @@ const filters = computed(() => {
   }
 })
 
-const fetchCharacters = async (page = 0, filters = {}) => {
+const fetchCharacters = async (page = 0, filters: any = {}) => {
   let data = await Api.fetchCharacters(page, filters)
 
   if (!data.error) {
@@ -61,7 +61,10 @@ const applyFilters = async () => {
   filterApplied.value = true
 
   let res = await fetchCharacters(page.value, filters.value)
-  totalPages.value = res.info.pages
+
+  if (!res?.error && res) {
+    totalPages.value = res.info.pages
+  }
 }
 
 watch(() => [page.value], () => {
@@ -72,10 +75,11 @@ watch(() => [page.value], () => {
 
 onMounted(async () => {
   let data = await fetchCharacters()
-  totalPages.value = data.info.pages
+
+  if (!data?.error && data) {
+    totalPages.value = data.info.pages
+  }
 })
-
-
 </script>
 
 <template>
@@ -110,9 +114,6 @@ onMounted(async () => {
     </div>
     <Pagination @next="changePage('increment')" @prev="changePage('decrement')" :page="page" />
   </div>
-
-
-
 </template>
 
 <style scoped>

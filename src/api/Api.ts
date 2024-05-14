@@ -22,7 +22,7 @@ export default abstract class Api {
     page: number = 0,
     filters?: Filters
   ): Promise<CharacterResponse> {
-    let filterQuery = [];
+    let filterQuery: any = [];
 
     if (filters) {
       if (filters?.name) {
